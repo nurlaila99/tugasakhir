@@ -39,10 +39,12 @@
     </style>
 </head>
 <body>
-    <h2 align="center">Laporan Keuangan Periode ({{ $date[0] }} - {{ $date[1] }})</h2>
+    <h4 align="center">CTHAITEA GRESIK</h4>
+    <h4 align="center">Laporan Keuangan</h4>
+    <h4 align="center">{{ $date[0] }} - {{ $date[1] }}</h4>
     <br>
-    <h3>PEMASUKAN</h3>
-    <h4>Penjualan</h4>
+    <h5>PEMASUKAN</h5>
+    <h5>Penjualan</h5>
     <table width="100%" class="table-hover table-bordered">
         <thead>
             <tr>
