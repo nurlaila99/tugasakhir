@@ -63,23 +63,23 @@
                                                             <div class="col-12 col-md-9"><input type="text" id="nama" name="nama" placeholder="Masukkan Nama Bahan Baku" class="form-control"></div>
                                                         </div>
                                                         <div class="row form-group">
-                                                            <div class="col col-md-3"><label for="text-input" class=" form-control-label">Jenis Bahan Baku</label></div>
-                                                            <div class="col-12 col-md-9">
-                                                                <select name="jenis_bahan_baku" id="jenis_bahan_baku" class="form-control">
-                                                                    <option value="">Please select</option>
-                                                                    @foreach($jenis_bahan_baku as $jbb)
-                                                                        <option value="{{ $jbb->ID_JENIS_BAHAN_BAKU }}">{{ $jbb->NAMA_JENIS_BAHAN_BAKU }}</option>
-                                                                    @endforeach
-                                                                </select>
-                                                            </div>
-                                                        </div>
-                                                        <div class="row form-group">
                                                             <div class="col col-md-3"><label for="text-input" class=" form-control-label">Harga</label></div>
                                                             <div class="col-12 col-md-9"><input type="number" id="harga" name="harga" placeholder="Masukkan Harga" class="form-control"></div>
                                                         </div>
                                                         <div class="row form-group">
                                                             <div class="col col-md-3"><label for="text-input" class=" form-control-label">Stok</label></div>
                                                             <div class="col-12 col-md-9"><input type="number" id="stok" name="stok" placeholder="Masukkan Stok" class="form-control"></div>
+                                                        </div>
+                                                        <div class="row form-group">
+                                                            <div class="col col-md-3"><label for="text-input" class=" form-control-label">Satuan</label></div>
+                                                            <div class="col-12 col-md-9">
+                                                                <select name="satuan" id="satuan" class="form-control">
+                                                                    <option value="">Please select</option>
+                                                                    <option value="1">Kg</option>
+                                                                    <option value="2">Pack</option>
+                                                                    <option value="3">Pcs</option>
+                                                                </select>
+                                                            </div>
                                                         </div>
                                                     </div>
                                                     <div class="modal-footer">
@@ -94,9 +94,9 @@
                                             <tr role="row">
                                                 <th class="sorting_asc" tabindex="0" aria-controls="bootstrap-data-table" rowspan="1" colspan="1" aria-sort="ascending" aria-label="Name: activate to sort column descending" style="width: 193px;">ID Bahan Baku</th>
                                                 <th class="sorting" tabindex="0" aria-controls="bootstrap-data-table" rowspan="1" colspan="1" aria-label="Position: activate to sort column ascending" style="width: 313px;">Nama Bahan Baku</th>
-                                                <th class="sorting" tabindex="0" aria-controls="bootstrap-data-table" rowspan="1" colspan="1" aria-label="Office: activate to sort column ascending" style="width: 313px;">Jenis Bahan Baku</th>
                                                 <th class="sorting" tabindex="0" aria-controls="bootstrap-data-table" rowspan="1" colspan="1" aria-label="Office: activate to sort column ascending" style="width: 113px;">Harga</th>
                                                 <th class="sorting" tabindex="0" aria-controls="bootstrap-data-table" rowspan="1" colspan="1" aria-label="Office: activate to sort column ascending" style="width: 113px;">Stok</th>
+                                                <th class="sorting" tabindex="0" aria-controls="bootstrap-data-table" rowspan="1" colspan="1" aria-label="Office: activate to sort column ascending" style="width: 113px;">Satuan</th>
                                                 <th class="sorting" tabindex="0" aria-controls="bootstrap-data-table" rowspan="1" colspan="1" aria-label="Office: activate to sort column ascending" style="width: 113px;">Aksi</th>
                                         </thead>
                                         <tbody>
@@ -104,15 +104,15 @@
                                             <tr>
                                                 <td>{{ $b->ID_BAHAN_BAKU }}</td>
                                                 <td>{{ $b->NAMA_BAHAN_BAKU }}</td>
-                                                <td>
-                                                @foreach($jenis_bahan_baku as $jbb)
-                                                    @if($b->ID_JENIS_BAHAN_BAKU == $jbb->ID_JENIS_BAHAN_BAKU)
-                                                        {{ $jbb-> NAMA_JENIS_BAHAN_BAKU }}
-                                                    @endif
-                                                @endforeach
-                                                </td>
                                                 <td>{{ $b->HARGA }}</td>
                                                 <td>{{ $b->STOK }}</td>
+                                                @if($b->SATUAN == 1)
+                                                    <td>Kg</td>
+                                                @elseif($b->SATUAN == 2)
+                                                    <td>Pack</td>
+                                                @elseif($b->SATUAN == 3)
+                                                    <td>Pcs</td>
+                                                @endif
                                                 <td align="center">
                                                     
                                                     <a class="btn btn-outline-warning btn-sm" data-toggle="modal" data-target="#edit{{ $b->ID_BAHAN_BAKU }}"><i class="fa fa-edit"></i></a>
@@ -143,25 +143,28 @@
                                                                         <div class="col-12 col-md-9" align="left"><input type="text" id="nama" name="nama" value="{{ $b->NAMA_BAHAN_BAKU }}" class="form-control"></div>
                                                                     </div>
                                                                     <div class="row form-group">
-                                                                        <div class="col col-md-3" align="left"><label for="text-input" class=" form-control-label">Jenis Bahan Baku</label></div>
-                                                                        <div class="col-12 col-md-9" align="left">
-                                                                            <select name="jenis_bahan_baku" id="jenis_bahan_baku" class="form-control">
-                                                                                @foreach($jenis_bahan_baku as $jbb)
-                                                                                    @if($jbb->ID_JENIS_BAHAN_BAKU == $b->ID_JENIS_BAHAN_BAKU)
-                                                                                        <option value="{{ $jbb->ID_JENIS_BAHAN_BAKU }}">{{ $jbb->NAMA_JENIS_BAHAN_BAKU }}</option>
-                                                                                    @endif
-                                                                                @endforeach
-                                                                                @foreach($jenis_bahan_baku as $jbb)
-                                                                                    @if($jbb->ID_JENIS_BAHAN_BAKU != $b->ID_JENIS_BAHAN_BAKU)
-                                                                                        <option value="{{ $jbb->ID_JENIS_BAHAN_BAKU }}">{{ $jbb->NAMA_JENIS_BAHAN_BAKU }}</option>
-                                                                                    @endif
-                                                                                @endforeach
-                                                                            </select>
-                                                                        </div>
-                                                                    </div>
-                                                                    <div class="row form-group">
                                                                         <div class="col col-md-3" align="left"><label for="text-input" class=" form-control-label">Harga</label></div>
                                                                         <div class="col-12 col-md-9" align="left"><input type="number" id="harga" name="harga" value="{{ $b->HARGA }}" class="form-control"></div>
+                                                                    </div>
+                                                                    <div class="row form-group">
+                                                                        <div class="col col-md-3" align="left"><label for="text-input" class=" form-control-label">Satuan</label></div>
+                                                                        <div class="col-12 col-md-9" align="left">
+                                                                            <select name="satuan" id="satuan" class="form-control">
+                                                                                @if($b->SATUAN == 1)
+                                                                                    <option value="1">Kg</option>
+                                                                                    <option value="2">Pack</option>
+                                                                                    <option value="3">Pcs</option>
+                                                                                @elseif($b->SATUAN == 2)
+                                                                                    <option value="2">Pack</option>
+                                                                                    <option value="1">Kg</option>
+                                                                                    <option value="3">Pcs</option>
+                                                                                @elseif($b->SATUAN == 3)
+                                                                                    <option value="3">Pcs</option>
+                                                                                    <option value="1">Kg</option>
+                                                                                    <option value="2">Pack</option>
+                                                                                @endif
+                                                                            </select>
+                                                                        </div>
                                                                     </div>
                                                                 </div>
                                                                 <div class="modal-footer">

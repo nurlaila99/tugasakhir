@@ -13,6 +13,7 @@
                                 <table class="table">
                                     <thead>
                                         <tr>
+                                            <th scope="col">No Meja</th>
                                             <th scope="col">Nota ID</th>
                                             <th scope="col">Tanggal</th>
                                             <th scope="col">Total</th>
@@ -23,18 +24,20 @@
                                         @foreach($penjualan as $p)
                                             @if($p->STATUS_PEMBAYARAN == 0)
                                             <tr>
+                                                <td>{{ $p->NO_MEJA }}</td>
                                                 <td>{{ $p->ID_PENJUALAN }}</td>
-                                                <td>{{ $p->TGL_PENJUALAN }}</td>
+                                                <td>{{ \Carbon\Carbon::parse($p->TGL_PENJUALAN)->translatedFormat('d-m-Y H:i:s') }}</td>
                                                 <td>{{ $p->TOTAL_PENJUALAN }}</td>
                                                 <td>
-                                                    <a class="btn btn-outline-primary btn-sm" data-toggle="modal" data-target="#edit{{ $p->ID_PENJUALAN }}">BAYAR</a>
+                                                <a class="btn btn-outline-primary btn-sm" href="penjualan/invoice/{{ $p->ID_PENJUALAN }}">INVOICE</a>    
+                                                <a data-toggle="modal" data-target="#edit{{ $p->ID_PENJUALAN }}"><button class="btn btn-outline-primary btn-sm">PAY</button></a>
                                                     <div class="modal fade" id="edit{{ $p->ID_PENJUALAN  }}" tabindex="-1" role="dialog" aria-labelledby="largeModalLabel" aria-hidden="true">
                                                         <div class="modal-dialog modal-lg" role="document">
                                                             <div class="modal-content">
                                                                 <div class="modal-header">
                                                                     <div class="row form-group">
                                                                         <div class="col col-md-6" align="left">
-                                                                            <h5 class="modal-title" id="largeModalLabel">Bayar Pesanan</h5>
+                                                                            <h4 class="modal-title" id="largeModalLabel"><strong>Payment</strong></h4>
                                                                         </div>
                                                                         <div class="col col-md-6" align="right">
                                                                             <button type="button" class="close" data-dismiss="modal" aria-label="Close">

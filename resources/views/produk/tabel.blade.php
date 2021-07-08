@@ -59,6 +59,17 @@
                                                     <form action="../produk/store" method="post" enctype="multipart/form-data" class="form-horizontal">
                                                         @csrf
                                                     <div class="modal-body">
+                                                    <div class="row form-group">
+                                                            <div class="col col-md-3"><label for="text-input" class=" form-control-label">Jenis Produk</label></div>
+                                                            <div class="col-12 col-md-9">
+                                                                <select name="jenis_produk" id="jenis_produk" class="form-control">
+                                                                    <option value="">Please select</option>
+                                                                    @foreach($jenis_produk as $j)
+                                                                        <option value="{{ $j->ID_JENIS_PRODUK }}">{{ $j->NAMA_JENIS_PRODUK }}</option>
+                                                                    @endforeach
+                                                                </select>
+                                                            </div>
+                                                        </div>
                                                         <div class="row form-group">
                                                             <div class="col col-md-3"><label for="text-input" class=" form-control-label">Nama Produk</label></div>
                                                             <div class="col-12 col-md-9"><input type="text" id="nama" name="nama" placeholder="Masukkan Nama Produk" class="form-control"></div>
@@ -79,6 +90,7 @@
                                         <thead>
                                             <tr role="row">
                                                 <th class="sorting_asc" tabindex="0" aria-controls="bootstrap-data-table" rowspan="1" colspan="1" aria-sort="ascending" aria-label="Name: activate to sort column descending" style="width: 193px;">ID Produk</th>
+                                                <th class="sorting" tabindex="0" aria-controls="bootstrap-data-table" rowspan="1" colspan="1" aria-label="Office: activate to sort column ascending" style="width: 313px;">Jenis Produk</th>
                                                 <th class="sorting" tabindex="0" aria-controls="bootstrap-data-table" rowspan="1" colspan="1" aria-label="Position: activate to sort column ascending" style="width: 313px;">Nama Produk</th>
                                                 <th class="sorting" tabindex="0" aria-controls="bootstrap-data-table" rowspan="1" colspan="1" aria-label="Office: activate to sort column ascending" style="width: 113px;">Harga</th>
                                                 <th class="sorting" tabindex="0" aria-controls="bootstrap-data-table" rowspan="1" colspan="1" aria-label="Office: activate to sort column ascending" style="width: 113px;">Aksi</th>
@@ -87,6 +99,13 @@
                                             @foreach($produk as $p)
                                             <tr>
                                                 <td>{{ $p->ID_PRODUK }}</td>
+                                                <td>
+                                                    @foreach($jenis_produk as $j)
+                                                        @if($p->ID_JENIS_PRODUK == $j->ID_JENIS_PRODUK)
+                                                            {{ $j->NAMA_JENIS_PRODUK }}
+                                                        @endif
+                                                    @endforeach
+                                                </td>
                                                 <td>{{ $p->NAMA_PRODUK }}</td>
                                                 <td>{{ $p->HARGA }}</td>
                                                 <td align="center">
@@ -112,6 +131,17 @@
                                                                     <div class="row form-group">
                                                                         <div class="col col-md-3" align="left"><label for="text-input" class=" form-control-label">ID Produk</label></div>
                                                                         <div class="col-12 col-md-9" align="left"><input type="text" id="id_produk" name="id_produk" value="{{ $p->ID_PRODUK }}" class="form-control" readonly></div>
+                                                                    </div>
+                                                                    <div class="row form-group">
+                                                                        <div class="col col-md-3" align="left"><label for="text-input" class=" form-control-label">Jenis Produk</label></div>
+                                                                        <div class="col-12 col-md-9">
+                                                                            <select name="jenis_produk" id="jenis_produk" class="form-control">
+                                                                                <option value="">Please select</option>
+                                                                                @foreach($jenis_produk as $j)
+                                                                                    <option value="{{ $j->ID_JENIS_PRODUK }}">{{ $j->NAMA_JENIS_PRODUK }}</option>
+                                                                                @endforeach
+                                                                            </select>
+                                                                        </div>
                                                                     </div>
                                                                     <div class="row form-group">
                                                                         <div class="col col-md-3" align="left"><label for="text-input" class=" form-control-label">Nama Produk</label></div>

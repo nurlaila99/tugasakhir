@@ -104,7 +104,7 @@
                                                                     @csrf
                                                                 <div class="modal-body">
                                                                     <div class="row form-group">
-                                                                        <div class="col col-md-3" align="left"><label for="text-input" class=" form-control-label">ID Jenis Pengeluaran/label></div>
+                                                                        <div class="col col-md-3" align="left"><label for="text-input" class=" form-control-label">ID Jenis Pengeluaran</div>
                                                                         <div class="col-12 col-md-9" align="left"><input type="text" id="id_jenis" name="id_jenis" value="{{ $jp->ID_JENIS_PENGELUARAN }}" class="form-control" readonly></div>
                                                                     </div>
                                                                     <div class="row form-group">

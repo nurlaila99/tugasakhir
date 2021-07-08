@@ -25,6 +25,10 @@ Route::get('home','LoginController@dashboard');
 Route::get('user', 'UserController@tampil');
 Route::post('user/store','UserController@store');
 Route::post('user/update','UserController@update');
+Route::get('profile/{id}','UserController@profile');
+Route::post('profile/update','UserController@profileupdate');
+Route::get('editpassword/{id}','UserController@editpassword');
+Route::post('editpassword/proses','UserController@editpasswordproses');
 
 //Jabatan
 
@@ -34,9 +38,9 @@ Route::post('jabatan/update','JabatanController@update');
 
 //Jenis Bahan Baku
 
-Route::get('jenis_bahan_baku', 'JenisBBController@tampil');
-Route::post('jenis_bahan_baku/store','JenisBBController@store');
-Route::post('jenis_bahan_baku/update','JenisBBController@update');
+Route::get('jenis_produk', 'JenisProdukController@tampil');
+Route::post('jenis_produk/store','JenisProdukController@store');
+Route::post('jenis_produk/update','JenisProdukController@update');
 
 //Bahan Baku
 
@@ -60,24 +64,28 @@ Route::post('produk/update','ProdukController@update');
 
 Route::get('penjualan', 'PenjualanController@tampil');
 Route::post('penjualan/submit', 'PenjualanController@store');
-Route::get('penjualan/invoice', 'PenjualanController@invoice');
+Route::get('penjualan/invoice/{id}', 'PenjualanController@invoice');
 Route::get('penjualan/invoice/cetak/{id}', 'PenjualanController@invoicePDF');
 Route::get('penjualan/struk/cetak/{id}', 'PenjualanController@strukPDF');
 Route::get('pembayaran', 'PenjualanController@pembayaran');
 Route::post('pembayaran/store', 'PenjualanController@store_bayar');
 Route::get('penjualan/report', 'PenjualanController@report');
+Route::get('penjualan/pdf/{daterange}', 'PenjualanController@reportPDF');
 
 //Pengeluaran
 
 Route::get('pengeluaran', 'PengeluaranController@tampil');
 Route::post('pengeluaran/store', 'PengeluaranController@store');
 Route::get('pengeluaran/report', 'PengeluaranController@report');
+Route::get('pengeluaran/pdf/{daterange}', 'PengeluaranController@reportPDF');
 
 //Pembelian
 
 Route::get('pembelian', 'PembelianController@tampil');
+Route::get('pembelian/tabel', 'PembelianController@tabel');
 Route::post('pembelian/store', 'PembelianController@store');
 Route::get('pembelian/report', 'PembelianController@report');
+Route::get('pembelian/pdf/{daterange}', 'PembelianController@reportPDF');
 Route::get('update_stok', 'PembelianController@update_stok');
 Route::post('update_stok/store', 'PembelianController@update_store');
 

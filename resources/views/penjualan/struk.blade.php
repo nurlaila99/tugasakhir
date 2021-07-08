@@ -10,28 +10,33 @@
         <div class="content">
             <div class="animated fadeIn">
                 <div class="row">
-
-                    <div class="col-md-12">
+                    <div class="col-md-3"></div>
+                    <div class="col-md-6">
                         <div class="card">
                             <div class="card-body">
                                 @foreach($penjualan as $p)
                                 @foreach($pembayaran as $pb)
                                 @if($p->ID_PENJUALAN == $pb->ID_PENJUALAN)
                                 <div class="row form-group">
-                                    <div class="col col-md-12" align="center"><strong><label for="text-input" class=" form-control-label">NOTA PEMBAYARAN<br>{{ $pb->ID_PEMBAYARAN }}</label></strong></div>
+                                    <div class="col col-md-12" align="center"><strong><label for="text-input" class=" form-control-label">NOTA PEMBAYARAN</label></strong></div>
                                 </div>
+                                
                                 <div class="row form-group">
-                                    <div class="col-12 col-md-2"><strong><label for="text-input" class=" form-control-label">Kasir</label></strong></div>
-                                    <div class="col-12 col-md-4">
-                                        @foreach($user as $u)
-                                            @if($u->ID_USER == $pb->ID_USER)
-                                                <strong><span>: {{ $u->NAMA_USER }}</span></strong>
-                                            @endif
-                                        @endforeach
+                                    <div class="col-12 col-md-6">
+                                        <strong><label for="text-input" class=" form-control-label">NOTA<br>
+                                            @foreach($user as $u)
+                                                @if($u->ID_USER == $pb->ID_USER)
+                                                    <strong><span>{{ $u->NAMA_USER }}</span></strong>
+                                                @endif
+                                            @endforeach
+                                            </label>
+                                        </strong>
                                     </div>
-                                    <div class="col-12 col-md-2"><strong><label for="text-input" class=" form-control-label">Tanggal</label></strong></div>
-                                    <div class="col-12 col-md-4"><strong><span>: {{ $pb->WAKTU_PEMBAYARAN }}</span></strong></div>
-                                </div>                                   
+                                    <div class="col-12 col-md-6" align="right"><strong><span>#{{ $pb->ID_PEMBAYARAN }}<br>
+                                    {{ $pb->WAKTU_PEMBAYARAN }}</span></strong>
+                                    </div>
+                                </div>   
+                                 
                                     
                                     <table class="table table-striped">
                                         
@@ -63,9 +68,8 @@
                                         </tbody>
                                     </table>
                                 <div class="row form-group">
-                                    <div class="col-12 col-md-8"></div>
-                                    <div class="col-12 col-md-2" align="left"><strong><label for="text-input" class=" form-control-label">Total Bayar</label></strong></div>
-                                    <div class="col-12 col-md-2"><strong><span>: Rp {{ number_format($pb->TOTAL_PEMBAYARAN) }}</span></strong></div>
+                                    <div class="col-12 col-md-8" align="right"><strong><label for="text-input" class=" form-control-label">Total Bayar :</label></strong></div>
+                                    <div class="col-12 col-md-4" align="right"><strong><span>Rp {{ number_format($pb->TOTAL_PEMBAYARAN) }}</span></strong></div>
                                 </div>
                                 <div class="clearfix" align="center">
                                     <a href="../penjualan/struk/cetak/{{ $p-> ID_PENJUALAN }}"><button class="btn btn-primary">CETAK</button>
@@ -77,7 +81,7 @@
                             
                         </div>
                     </div>
-
+                    <div class="col-md-3"></div>
 
                 </div>
             </div><!-- .animated -->

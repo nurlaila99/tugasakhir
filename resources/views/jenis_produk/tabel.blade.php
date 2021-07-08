@@ -10,7 +10,7 @@
                     <div class="col-md-12">
                         <div class="card">
                             <div class="card-header">
-                                <strong class="card-title">Data Jenis Bahan Baku</strong>
+                                <strong class="card-title">Data Jenis Produk</strong>
                             </div>
                             <div class="card-body">
                             @if($message = Session::get('success'))
@@ -38,7 +38,7 @@
                                     <table id="bootstrap-data-table-export" class="table table-striped table-bordered dataTable no-footer" role="grid" aria-describedby="bootstrap-data-table_info">
                                         <div class="row">
                                             <div class="col-md-12" align="right">
-                                                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#largeModal">Tambah Jenis Bahan Baku</button><br><br>
+                                                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#largeModal">Tambah Jenis Produk</button><br><br>
                                             </div>
                                         </div>
                                         <div class="modal fade" id="largeModal" tabindex="-1" role="dialog" aria-labelledby="largeModalLabel" aria-hidden="true">
@@ -47,7 +47,7 @@
                                                     <div class="modal-header">
                                                         <div class="row form-group">
                                                             <div class="col col-md-6">
-                                                                <h5 class="modal-title" id="largeModalLabel">Tambah Jenis Bahan Baku</h5>
+                                                                <h5 class="modal-title" id="largeModalLabel">Tambah Jenis Produk</h5>
                                                             </div>
                                                             <div class="col col-md-6" align="right">
                                                                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -56,12 +56,12 @@
                                                             </div>
                                                         </div>
                                                     </div>
-                                                    <form action="../jenis_bahan_baku/store" method="post" enctype="multipart/form-data" class="form-horizontal">
+                                                    <form action="../jenis_produk/store" method="post" enctype="multipart/form-data" class="form-horizontal">
                                                         @csrf
                                                     <div class="modal-body">
                                                         <div class="row form-group">
-                                                            <div class="col col-md-3"><label for="text-input" class=" form-control-label">Nama</label></div>
-                                                            <div class="col-12 col-md-9"><input type="text" id="nama" name="nama" placeholder="Masukkan Nama Jenis Bahan Baku" class="form-control"></div>
+                                                            <div class="col col-md-3"><label for="text-input" class=" form-control-label">Nama Jenis Produk</label></div>
+                                                            <div class="col-12 col-md-9"><input type="text" id="nama" name="nama" placeholder="Masukkan Nama Jenis Produk" class="form-control"></div>
                                                         </div>
                                                     </div>
                                                     <div class="modal-footer">
@@ -79,19 +79,19 @@
                                                 <th class="sorting" tabindex="0" aria-controls="bootstrap-data-table" rowspan="1" colspan="1" aria-label="Office: activate to sort column ascending" style="width: 113px;">Aksi</th>
                                         </thead>
                                         <tbody>
-                                            @foreach($jenis_bahan_baku as $jbb)
+                                            @foreach($jenis_produk as $jp)
                                             <tr>
-                                                <td>{{ $jbb->ID_JENIS_BAHAN_BAKU }}</td>
-                                                <td>{{ $jbb->NAMA_JENIS_BAHAN_BAKU }}</td>
+                                                <td>{{ $jp->ID_JENIS_PRODUK }}</td>
+                                                <td>{{ $jp->NAMA_JENIS_PRODUK }}</td>
                                                 <td align="center">
-                                                    <a class="btn btn-outline-warning btn-sm" data-toggle="modal" data-target="#edit{{ $jbb->ID_JENIS_BAHAN_BAKU }}"><i class="fa fa-edit"></i></a>
-                                                    <div class="modal fade" id="edit{{ $jbb->ID_JENIS_BAHAN_BAKU  }}" tabindex="-1" role="dialog" aria-labelledby="largeModalLabel" aria-hidden="true">
+                                                    <a class="btn btn-outline-warning btn-sm" data-toggle="modal" data-target="#edit{{ $jp->ID_JENIS_PRODUK }}"><i class="fa fa-edit"></i></a>
+                                                    <div class="modal fade" id="edit{{ $jp->ID_JENIS_PRODUK  }}" tabindex="-1" role="dialog" aria-labelledby="largeModalLabel" aria-hidden="true">
                                                         <div class="modal-dialog modal-lg" role="document">
                                                             <div class="modal-content">
                                                                 <div class="modal-header">
                                                                     <div class="row form-group">
                                                                         <div class="col col-md-6" align="left">
-                                                                            <h5 class="modal-title" id="largeModalLabel">Edit Jenis Bahan Baku</h5>
+                                                                            <h5 class="modal-title" id="largeModalLabel">Edit Jenis Produk</h5>
                                                                         </div>
                                                                         <div class="col col-md-6" align="right">
                                                                             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -100,16 +100,16 @@
                                                                         </div>
                                                                     </div>
                                                                 </div>
-                                                                <form action="../jenis_bahan_baku/update" method="post" enctype="multipart/form-data" class="form-horizontal">
+                                                                <form action="../jenis_produk/update" method="post" enctype="multipart/form-data" class="form-horizontal">
                                                                     @csrf
                                                                 <div class="modal-body">
                                                                     <div class="row form-group">
-                                                                        <div class="col col-md-3" align="left"><label for="text-input" class=" form-control-label">ID Jenis Bahan Baku</label></div>
-                                                                        <div class="col-12 col-md-9" align="left"><input type="text" id="id_jenis" name="id_jenis" value="{{ $jbb->ID_JENIS_BAHAN_BAKU }}" class="form-control" readonly></div>
+                                                                        <div class="col col-md-3" align="left"><label for="text-input" class=" form-control-label">ID Jenis Produk</label></div>
+                                                                        <div class="col-12 col-md-9" align="left"><input type="text" id="id_jenis" name="id_jenis" value="{{ $jp->ID_JENIS_PRODUK }}" class="form-control" readonly></div>
                                                                     </div>
                                                                     <div class="row form-group">
-                                                                        <div class="col col-md-3" align="left"><label for="text-input" class=" form-control-label">Nama</label></div>
-                                                                        <div class="col-12 col-md-9" align="left"><input type="text" id="nama" name="nama" value="{{ $jbb->NAMA_JENIS_BAHAN_BAKU }}" class="form-control"></div>
+                                                                        <div class="col col-md-3" align="left"><label for="text-input" class=" form-control-label">Nama Jenis Produk</label></div>
+                                                                        <div class="col-12 col-md-9" align="left"><input type="text" id="nama" name="nama" value="{{ $jp->NAMA_JENIS_PRODUK }}" class="form-control"></div>
                                                                     </div>
                                                                 </div>
                                                                 <div class="modal-footer">

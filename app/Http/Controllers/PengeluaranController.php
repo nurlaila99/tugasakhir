@@ -9,6 +9,7 @@ use Storage;
 use DB;
 use Session;
 use Carbon\Carbon;
+use PDF;
 
 class PengeluaranController extends Controller
 {
@@ -16,10 +17,11 @@ class PengeluaranController extends Controller
     public function tampil(){
         $user = DB::table('user')->get();
         $jenis_pengeluaran = DB::table('jenis_pengeluaran')->get();
+        $pengeluaran_bulanan = DB::table('pengeluaran_bulanan')->get();
         if(!Session::get('login')){
 	        return redirect('/')->with('alert','Anda harus login terlebih dahulu');
 	    }else{
-    	    return view('pengeluaran/pengeluaran',['user'=>$user, 'jenis_pengeluaran'=>$jenis_pengeluaran]);
+    	    return view('pengeluaran/pengeluaran',['user'=>$user, 'jenis_pengeluaran'=>$jenis_pengeluaran, 'pengeluaran_bulanan'=>$pengeluaran_bulanan]);
         }
     }
 
@@ -74,13 +76,31 @@ class PengeluaranController extends Controller
             $end = Carbon::parse($date[1])->format('Y-m-d') . ' 23:59:59';
         }
 
-        $user = DB::table('user')->get();
         $pengeluaran_bulanan = DB::table('pengeluaran_bulanan')->whereBetween('TGL_PENGELUARAN', [$start, $end])->get();
         $jenis_pengeluaran = DB::table('jenis_pengeluaran')->get();
+        $total_pengeluaran = DB::table('pengeluaran_bulanan')->whereBetween('TGL_PENGELUARAN', [$start, $end])->SUM('TOTAL_PENGELUARAN');
         if(!Session::get('login')){
 	        return redirect('/')->with('alert','Anda harus login terlebih dahulu');
 	    }else{
-            return view('pengeluaran/tabel',['user'=>$user, 'pengeluaran_bulanan'=>$pengeluaran_bulanan, 'jenis_pengeluaran'=>$jenis_pengeluaran]);
+            return view('pengeluaran/tabel',['pengeluaran_bulanan'=>$pengeluaran_bulanan, 'jenis_pengeluaran'=>$jenis_pengeluaran, 'total_pengeluaran'=>$total_pengeluaran]);
+        }
+    }
+
+    public function reportPDF($daterange){
+        $date = explode('+', $daterange); //EXPLODE TANGGALNYA UNTUK MEMISAHKAN START & END
+        //DEFINISIKAN VARIABLENYA DENGAN FORMAT TIMESTAMPS
+        $start = Carbon::parse($date[0])->format('Y-m-d') . ' 00:00:00';
+        $end = Carbon::parse($date[1])->format('Y-m-d') . ' 23:59:59';
+
+        $pengeluaran_bulanan = DB::table('pengeluaran_bulanan')->whereBetween('TGL_PENGELUARAN', [$start, $end])->get();
+        $jenis_pengeluaran = DB::table('jenis_pengeluaran')->get();
+        $total_pengeluaran = DB::table('pengeluaran_bulanan')->whereBetween('TGL_PENGELUARAN', [$start, $end])->SUM('TOTAL_PENGELUARAN');
+        if(!Session::get('login')){
+	        return redirect('/')->with('alert','Anda harus login terlebih dahulu');
+	    }else{
+            $pdf=PDF::loadview('pengeluaran/cetakLaporanPDF', ['start'=>$start, 'end'=>$end, 'pengeluaran_bulanan'=>$pengeluaran_bulanan, 'jenis_pengeluaran'=>$jenis_pengeluaran, 'total_pengeluaran'=>$total_pengeluaran]);
+            //GENERATE PDF-NYA
+            return $pdf->stream();
         }
     }
 }

@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Session;
 
 use Illuminate\Support\Facades\Crypt;
 use DB;
+use Carbon\Carbon;
 
 
 class LoginController extends Controller
@@ -22,21 +23,21 @@ class LoginController extends Controller
     }
     
     public function dashboard(){
-        $banyakpenjualan = DB::table('penjualan')->COUNT('ID_PENJUALAN');
-        $totalpenjualan = DB::table('pembayaran')->SUM('TOTAL_PEMBAYARAN');
-        $total_pembelian = DB::table('pembelian')->SUM('TOTAL_PEMBELIAN');
-        $total_pengeluaran = DB::table('pengeluaran_bulanan')->SUM('TOTAL_PENGELUARAN');
+        $start = Carbon::now()->format('Y-m-d H:i:s');
+        $end = Carbon::now()->format('Y-m-d H:i:s');
+        $start2 = Carbon::now()->startOfMonth()->format('Y-m-d H:i:s');
+        $end2 = Carbon::now()->endOfMonth()->format('Y-m-d H:i:s');
+
+        $totalpenjualan = DB::table('pembayaran')->whereBetween('WAKTU_PEMBAYARAN', [$start2, $end2])->SUM('TOTAL_PEMBAYARAN');
+        $total_pembelian = DB::table('pembelian')->whereBetween('TGL_PEMBELIAN', [$start2, $end2])->SUM('TOTAL_PEMBELIAN');
+        $total_pengeluaran = DB::table('pengeluaran_bulanan')->whereBetween('TGL_PENGELUARAN', [$start2, $end2])->SUM('TOTAL_PENGELUARAN');
         $total = $total_pembelian + $total_pengeluaran;
-        $user = DB::table('user')->COUNT('ID_USER');
-        $totalpcs = DB::table('detail_penjualan')->SUM('JUMLAH');
-        $totalthaitea = DB::table('detail_penjualan')->where('ID_PRODUK', 'P0001')->SUM('JUMLAH');
-        $totalchoco = DB::table('detail_penjualan')->where('ID_PRODUK', 'P0002')->SUM('JUMLAH');
-        $totalgreentea = DB::table('detail_penjualan')->where('ID_PRODUK', 'P0003')->SUM('JUMLAH');
-        $totalavocado = DB::table('detail_penjualan')->where('ID_PRODUK', 'P0004')->SUM('JUMLAH');
-        $persenthaitea = ($totalthaitea/$totalpcs)*100;
-        $persenchoco = ($totalchoco/$totalpcs)*100;
-        $persengreentea = ($totalgreentea/$totalpcs)*100;
-        $persenavocado = ($totalavocado/$totalpcs)*100;
+        $banyakpenjualan = DB::table('detail_penjualan')->join('penjualan', 'penjualan.ID_PENJUALAN', '=', 'detail_penjualan.ID_PENJUALAN')
+                        ->where('.penjualan.STATUS_PEMBAYARAN','=','1')
+                        ->whereBetween('penjualan.TGL_PENJUALAN', [$start2, $end2])
+                        ->sum('detail_penjualan.JUMLAH');
+        $bahan_baku = DB::table('bahan_baku')->get();
+
         if(!Session::get('login')){
 	        return redirect('/')->with('alert','Anda harus login terlebih dahulu');
 	    }else{
@@ -44,15 +45,7 @@ class LoginController extends Controller
                 'banyakpenjualan'=>$banyakpenjualan,
                 'totalpenjualan'=>$totalpenjualan,
                 'total'=>$total,
-                'user'=>$user,
-                'totalthaitea'=>$totalthaitea,
-                'totalchoco'=>$totalchoco,
-                'totalgreentea'=>$totalgreentea,
-                'totalavocado'=>$totalavocado,
-                'persenthaitea'=>$persenthaitea,
-                'persenchoco'=>$persenchoco,
-                'persengreentea'=>$persengreentea,
-                'persenavocado'=>$persenavocado
+                'bahan_baku'=>$bahan_baku
             ]);
         }
 	}

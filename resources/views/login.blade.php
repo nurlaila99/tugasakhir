@@ -33,7 +33,7 @@
             <div class="login-content">
                 <div class="login-logo">
                     <a href="index.html">
-                        <img class="align-content" src="{{ asset('asset/lte/images/logo.png')}}" alt="">
+                        <img class="align-content" src="{{ asset('asset/lte/images/logox.png')}}" alt="">
                     </a>
                 </div>
                 <div class="login-form">

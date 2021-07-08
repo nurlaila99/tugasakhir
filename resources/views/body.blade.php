@@ -15,7 +15,7 @@
                                     <div class="stat-content">
                                         <div class="text-left dib">
                                             <div class="stat-text">$<span class="count">{{$totalpenjualan}}</span></div>
-                                            <div class="stat-heading">Penghasilan</div>
+                                            <div class="stat-heading">Penghasilan Bulan Ini</div>
                                         </div>
                                     </div>
                                 </div>
@@ -33,7 +33,7 @@
                                     <div class="stat-content">
                                         <div class="text-left dib">
                                             <div class="stat-text"><span class="count">{{$banyakpenjualan}}</span></div>
-                                            <div class="stat-heading">Penjualan</div>
+                                            <div class="stat-heading">Penjualan Bulan Ini</div>
                                         </div>
                                     </div>
                                 </div>
@@ -51,7 +51,7 @@
                                     <div class="stat-content">
                                         <div class="text-left dib">
                                             <div class="stat-text">$<span class="count">{{$total}}</span></div>
-                                            <div class="stat-heading">Pengeluaran</div>
+                                            <div class="stat-heading">Pengeluaran Bulan Ini</div>
                                         </div>
                                     </div>
                                 </div>
@@ -66,39 +66,32 @@
                     <div class="col-lg-12">
                         <div class="card">
                             <div class="card-body">
-                                <h4 class="box-title">Penjualan</h4>
+                                <h4 class="box-title">Stok Bahan Baku</h4>
                             </div>
                             <div class="row">
                                 <div class="col-lg-12">
                                     <div class="card-body">
+                                        @foreach($bahan_baku as $bb)
                                         <div class="progress-box progress-1">
-                                            <h4 class="por-title">Thai Tea Original</h4>
-                                            <div class="por-txt">{{$totalthaitea}} Penjualan ({{$persenthaitea}}%)</div>
-                                            <div class="progress mb-2" style="height: 5px;">
-                                                <div class="progress-bar bg-flat-color-1" role="progressbar" style="width: {{$persenthaitea}}%;" aria-valuenow="{{$persenthaitea}}" aria-valuemin="0" aria-valuemax="100"></div>
-                                            </div>
+                                            <h4 class="por-title">{{ $bb->NAMA_BAHAN_BAKU }}</h4>
+                                            @if($bb->SATUAN == '1')
+                                                <div class="por-txt">{{ $bb->STOK }} Kg</div>
+                                                <div class="progress mb-2" style="height: 5px;">
+                                                    <div class="progress-bar bg-flat-color-3" role="progressbar" style="width: {{ $bb->STOK / 10 * 100 }}%;" aria-valuenow="{{ $bb->STOK / 10 * 100 }}" aria-valuemin="0" aria-valuemax="100"></div>
+                                                </div>
+                                            @elseif($bb->SATUAN == '2')
+                                                <div class="por-txt">{{ $bb->STOK }} Pack</div>
+                                                <div class="progress mb-2" style="height: 5px;">
+                                                    <div class="progress-bar bg-flat-color-3" role="progressbar" style="width: {{ $bb->STOK / 10 * 100 }}%;" aria-valuenow="{{ $bb->STOK / 10 * 100 }}" aria-valuemin="0" aria-valuemax="100"></div>
+                                                </div>
+                                            @elseif($bb->SATUAN == '3')
+                                                <div class="por-txt">{{ $bb->STOK }} Pcs</div>
+                                                <div class="progress mb-2" style="height: 5px;">
+                                                    <div class="progress-bar bg-flat-color-3" role="progressbar" style="width: {{ $bb->STOK / 10 * 100 }}%;" aria-valuenow="{{ $bb->STOK / 10 * 100 }}" aria-valuemin="0" aria-valuemax="100"></div>
+                                                </div>
+                                            @endif
                                         </div>
-                                        <div class="progress-box progress-2">
-                                            <h4 class="por-title">Choco Hazelnut</h4>
-                                            <div class="por-txt">{{$totalchoco}} Penjualan ({{$persenchoco}}%)</div>
-                                            <div class="progress mb-2" style="height: 5px;">
-                                                <div class="progress-bar bg-flat-color-2" role="progressbar" style="width: {{$persenchoco}}%;" aria-valuenow="{{$persenchoco}}" aria-valuemin="0" aria-valuemax="100"></div>
-                                            </div>
-                                        </div>
-                                        <div class="progress-box progress-2">
-                                            <h4 class="por-title">Green Tea</h4>
-                                            <div class="por-txt">{{$totalgreentea}} Penjualan ({{$persengreentea}}%)</div>
-                                            <div class="progress mb-2" style="height: 5px;">
-                                                <div class="progress-bar bg-flat-color-3" role="progressbar" style="width: {{$persengreentea}}%;" aria-valuenow="{{$persengreentea}}" aria-valuemin="0" aria-valuemax="100"></div>
-                                            </div>
-                                        </div>
-                                        <div class="progress-box progress-2">
-                                            <h4 class="por-title">Avocado</h4>
-                                            <div class="por-txt">{{$totalavocado}} Penjualan ({{$persenavocado}}%)</div>
-                                            <div class="progress mb-2" style="height: 5px;">
-                                                <div class="progress-bar bg-flat-color-4" role="progressbar" style="width: {{$persenavocado}}%;" aria-valuenow="{{$persenavocado}}" aria-valuemin="0" aria-valuemax="100"></div>
-                                            </div>
-                                        </div>
+                                        @endforeach
                                     </div> <!-- /.card-body -->
                                 </div>
                             </div> <!-- /.row -->

@@ -14,23 +14,36 @@
                     <div class="col-md-12">
                         <div class="card">
                             <div class="card-header">
-                                <strong class="card-title">Laporan Pembelian</strong>
+                                <strong class="card-title">Data Pembelian Bahan Baku</strong>
                             </div>
                             <div class="card-body">
-                            <form action="/pembelian/report" method="get">
-                                <div class="row form-group">
-                                    <div class="col col-md-8" align="right"><label for="text-input" class=" form-control-label">Range</label></div>
-                                    <div class="col-12 col-md-3" align="left">
-                                        <input type="text" class="form-control float-right" id="reservation" name="date">                                      
-                                    </div>
-                                    <div class="col-12 col-md-1" align="left">
-                                        <button class="btn btn-secondary" type="submit">Filter</button>                                        
-                                    </div>
+                            @if($message = Session::get('success'))
+                                <div class="sufee-alert alert with-close alert-primary alert-dismissible fade show">
+                                    <span class="badge badge-pill badge-primary">Success</span>
+                                    {{ $message }}
+                                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                        <span aria-hidden="true">×</span>
+                                    </button>
                                 </div>
-                            </form>
+                            @endif
+                            @if(count($errors) > 0)
+                                <div class="sufee-alert alert with-close alert-danger alert-dismissible fade show">
+                                    <span class="badge badge-pill badge-danger">Error</span>
+                                    @foreach($errors->all() as $error)
+                                        {{ $error }}
+                                    @endforeach
+                                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                        <span aria-hidden="true">×</span>
+                                    </button>
+                                </div>
+                            @endif
                                 <div id="bootstrap-data-table_wrapper" class="dataTables_wrapper container-fluid dt-bootstrap4 no-footer">                                    
                                     <table id="bootstrap-data-table-export" class="table table-striped table-bordered dataTable no-footer" role="grid" aria-describedby="bootstrap-data-table_info">
-                                        
+                                        <div class="row">
+                                            <div class="col-md-12" align="right">
+                                                <a href="../pembelian"><button type="button" class="btn btn-primary">Tambah Pembelian</button></a>
+                                            </div>
+                                        </div>
                                         <thead>
                                             <tr role="row">
                                                 <th class="sorting_asc" tabindex="0" aria-controls="bootstrap-data-table" rowspan="1" colspan="1" aria-sort="ascending" aria-label="Name: activate to sort column descending" style="width: 193px;">ID Pembelian</th>
@@ -48,7 +61,7 @@
                                                         <td>{{ $u->NAMA_USER }}</td>
                                                     @endif
                                                 @endforeach
-                                                <td>{{ $p->TGL_PEMBELIAN }}</td>
+                                                <td>{{ \Carbon\Carbon::parse($p->TGL_PEMBELIAN)->translatedFormat('d-m-Y H:i') }}</td>
                                                 <td>{{ number_format($p->TOTAL_PEMBELIAN) }}</td>
                                                 <td align="center">
                                                     <a class="btn btn-outline-primary btn-sm" data-toggle="modal" data-target="#edit{{ $p->ID_PEMBELIAN }}">DETAIL</a>
@@ -60,7 +73,7 @@
                                                                 <div class="modal-header">
                                                                     <div class="row form-group">
                                                                         <div class="col col-md-6" align="left">
-                                                                            <h5 class="modal-title" id="largeModalLabel">Detail Pembelian Bahan Baku</h5>
+                                                                            <h5 class="modal-title" id="largeModalLabel"><strong>Detail Pembelian Bahan Baku</strong></h5>
                                                                         </div>
                                                                         <div class="col col-md-6" align="right">
                                                                             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -102,29 +115,24 @@
                                                             </div>
                                                         </div>
                                                     </div>
-                                                    <div class="modal fade" id="bukti{{ $p->ID_PEMBELIAN  }}" tabindex="-1" role="dialog" aria-labelledby="largeModalLabel" aria-hidden="true">
-                                                        <div class="modal-dialog modal-lg" role="document">
+                                                    <div class="modal fade show" id="bukti{{ $p->ID_PEMBELIAN  }}" tabindex="-1" role="dialog" aria-labelledby="smallmodalLabel">
+                                                        <div class="modal-dialog modal-sm" role="document">
                                                             <div class="modal-content">
                                                                 <div class="modal-header">
-                                                                    <div class="row form-group">
-                                                                        <div class="col col-md-6" align="left">
-                                                                            <h5 class="modal-title" id="largeModalLabel">Bukti Pembelian</h5>
-                                                                        </div>
-                                                                        <div class="col col-md-6" align="right">
-                                                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                                                                <span aria-hidden="true">&times;</span>
-                                                                            </button>
-                                                                        </div>
-                                                                    </div>
+                                                                    <h5 class="modal-title" id="smallmodalLabel"><strong>Bukti Pembelian Bahan Baku</strong></h5>
+                                                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                                        <span aria-hidden="true">×</span>
+                                                                    </button>
                                                                 </div>
                                                                 <div class="modal-body">
                                                                     <center>
-                                                                        <img src="{{ asset($p->BUKTI_PEMBELIAN) }}">
+                                                                        <img src="{{ asset($p->BUKTI_PEMBELIAN) }}" width="300px">
                                                                     </center>
                                                                 </div>
                                                             </div>
                                                         </div>
                                                     </div>
+                                                    
                                                 </td>
                                             </tr>
                                             @endforeach
@@ -165,15 +173,4 @@
         });
     </script>
 
-    <script type="text/javascript">
-        $(document).ready(function() {
-            let start = moment().startOf('month')
-            let end = moment().endOf('month')
-
-            $('#reservation').daterangepicker({
-                startDate: start,
-                endDate: end
-            })
-        })
-    </script>
   @endsection

@@ -10,26 +10,29 @@
         <div class="content">
             <div class="animated fadeIn">
                 <div class="row">
-
-                    <div class="col-md-12">
+                    <div class="col-md-3"></div>
+                    <div class="col-md-6">
                         <div class="card">
                             <div class="card-body">
                                 @foreach($penjualan as $p)
                                 <div class="row form-group">
-                                    <div class="col col-md-12" align="center"><strong><label for="text-input" class=" form-control-label">INVOICE<br>{{ $p->ID_PENJUALAN }}</label></strong></div>
+                                    <div class="col col-md-12" align="center"><strong><label for="text-input" class=" form-control-label">INVOICE</label></strong></div>
                                 </div>
                                 <div class="row form-group">
-                                    <div class="col-12 col-md-2"><strong><label for="text-input" class=" form-control-label">Kasir</label></strong></div>
-                                    <div class="col-12 col-md-4">
-                                        @foreach($user as $u)
-                                            @if($u->ID_USER == $p->ID_USER)
-                                                <strong><span>: {{ $u->NAMA_USER }}</span></strong>
-                                            @endif
-                                        @endforeach
+                                    <div class="col-12 col-md-6">
+                                        <strong><label for="text-input" class=" form-control-label">#{{ $p->ID_PENJUALAN }}<br>
+                                            @foreach($user as $u)
+                                                @if($u->ID_USER == $p->ID_USER)
+                                                    <strong><span>{{ $u->NAMA_USER }}</span></strong>
+                                                @endif
+                                            @endforeach
+                                            </label>
+                                        </strong>
                                     </div>
-                                    <div class="col-12 col-md-2"><strong><label for="text-input" class=" form-control-label">Tanggal</label></strong></div>
-                                    <div class="col-12 col-md-4"><strong><span>: {{ $p->TGL_PENJUALAN }}</span></strong></div>
-                                </div>                                   
+                                    <div class="col-12 col-md-6" align="right"><strong><span>{{ $p->TGL_PENJUALAN }}<br>
+                                        No Meja : {{ $p->NO_MEJA }}</span></strong>
+                                    </div>
+                                </div>                             
                                     
                                     <table class="table table-striped">
                                         
@@ -61,12 +64,12 @@
                                         </tbody>
                                     </table>
                                 <div class="row form-group">
-                                    <div class="col-12 col-md-8"></div>
+                                    <div class="col-12 col-md-6"></div>
                                     <div class="col-12 col-md-2" align="left"><strong><label for="text-input" class=" form-control-label">Bill</label></strong></div>
-                                    <div class="col-12 col-md-2"><strong><span>: Rp {{ number_format($p->TOTAL_PENJUALAN) }}</span></strong></div>
+                                    <div class="col-12 col-md-4"><strong><span>: Rp {{ number_format($p->TOTAL_PENJUALAN) }}</span></strong></div>
                                 </div>
                                 <div class="clearfix" align="center">
-                                    <a href="../penjualan/invoice/cetak/{{ $p-> ID_PENJUALAN }}"><button class="btn btn-primary">CETAK</button>
+                                    <a href="/penjualan/invoice/cetak/{{ $p-> ID_PENJUALAN }}"><button class="btn btn-primary">CETAK</button>
                                 </div>
                                 @endforeach
                                 
@@ -74,7 +77,7 @@
                             
                         </div>
                     </div>
-
+                    <div class="col-md-3"></div>
 
                 </div>
             </div><!-- .animated -->

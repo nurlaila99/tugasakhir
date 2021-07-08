@@ -13,6 +13,14 @@
                                 <form method="post" action="penjualan/submit">
                                 @csrf
                                 <div class="row form-group">
+                                    <div class="col-12 col-md-2"><label for="text-input" class=" form-control-label">Nota ID</label></div>
+                                    <div class="col-12 col-md-4">
+                                        <input type="text" id="nota" name="nota" value="{{ $nota_id }}" class="form-control" disabled>
+                                    </div>
+                                    <div class="col-12 col-md-2"><label for="text-input" class=" form-control-label">Tanggal</label></div>
+                                    <div class="col-12 col-md-4"><input type="text" id="date" name="date" value="{{ date('d-m-Y') }}" class="form-control" disabled></div>
+                                </div>
+                                <div class="row form-group">
                                     <div class="col-12 col-md-2"><label for="text-input" class=" form-control-label">Kasir</label></div>
                                     <div class="col-12 col-md-4">
                                         @if(\Session::has('login'))
@@ -20,8 +28,8 @@
                                             <input type="text" name="user" value="{{ Session::get('nama') }}" class="form-control" readonly>
                                         @endif
                                     </div>
-                                    <div class="col-12 col-md-2"><label for="text-input" class=" form-control-label">Tanggal</label></div>
-                                    <div class="col-12 col-md-4"><input type="text" id="date" name="date" value="{{ date('d-m-Y') }}" class="form-control" disabled></div>
+                                    <div class="col-12 col-md-2"><label for="text-input" class=" form-control-label">No Meja</label></div>
+                                    <div class="col-12 col-md-4"><input type="text" id="no_meja" name="no_meja" class="form-control"></div>
                                 </div>
 
                                 <br>
@@ -92,7 +100,19 @@
                                                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
                                             </div>
                                             <div class="modal-body">
-                                                <table class="table table-bordered>
+                                                <div class="row form-group">
+                                                        <div class="col-12 col-md-3">
+                                                            <select name="jenis_produk" id="jenis_produk" class="form-control">
+                                                                <option value="">Semua</option>
+                                                                @foreach($jenis_produk as $j)
+                                                                    <option value="{{ $j->ID_JENIS_PRODUK }}">{{ $j->NAMA_JENIS_PRODUK }}</option>
+                                                                @endforeach
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-12">
+                                                <table class="table table-bordered" id="myTable">
                                                     <thead>
                                                         <tr role="row">
                                                             <th class="datatable-nosort sorting_disabled" rowspan="1" colspan="1">ID Produk</th>
@@ -110,6 +130,7 @@
                                                         @endforeach
                                                     </tbody>
                                                 </table>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
@@ -129,6 +150,7 @@
 @section('script')
 <script>
 	var barang = <?php echo json_encode($produk); ?>;
+    var jenis = <?php echo json_encode($jenis_produk); ?>;
 	console.log(barang[0]["NAMA_PRODUK"]);
 	var colnum=0;
 
@@ -137,6 +159,43 @@
 			modal();
 		}
 	}
+
+    jQuery(document).ready(function ()
+        {
+                jQuery('select[name="jenis_produk"]').on('change',function(){
+                var id_jenis = jQuery(this).val();
+                if(id_jenis)
+                {
+                    var table, tr, td, index;
+                    table = document.getElementById("myTable");
+                    while(table.rows.length>1){
+                        table.deleteRow(1);
+                    }
+                    
+                    for(var i=0;i<barang.length;i++){
+                        if(barang[i]["ID_JENIS_PRODUK"]==id_jenis){
+                            index=i;
+                            var row = table.insertRow(table.rows.length);
+                            row.setAttribute('id','col'+colnum);
+                            row.setAttribute('style','cursor:pointer');
+                            row.onclick = function() {pilihBarang(barang[index]["ID_PRODUK"])};
+                            var id = 'col'+colnum;
+                            colnum++;
+                            
+                            
+                            var cell1 = row.insertCell(0);
+                            var cell2 = row.insertCell(1);
+                            var cell3 = row.insertCell(2);
+                            cell1.innerHTML = barang[index]["ID_PRODUK"];
+                            cell2.innerHTML = barang[index]["NAMA_PRODUK"];
+                            cell3.innerHTML = barang[index]["HARGA"];
+                        }
+                    }
+
+                }
+                });
+        });
+
 	function pilihBarang(id){
 		var index;
 		for(var i=0;i<barang.length;i++){

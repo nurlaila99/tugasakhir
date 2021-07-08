@@ -9,6 +9,7 @@ use Storage;
 use DB;
 use Session;
 use Carbon\Carbon;
+use PDF;
 
 class PembelianController extends Controller
 {
@@ -20,6 +21,18 @@ class PembelianController extends Controller
 	        return redirect('/')->with('alert','Anda harus login terlebih dahulu');
 	    }else{
             return view('pembelian/pembelian',['user'=>$user, 'bahan_baku'=>$bahan_baku]);
+        }
+    }
+
+    public function tabel(){
+        $user = DB::table('user')->get();
+        $bahan_baku = DB::table('bahan_baku')->get();
+        $pembelian = DB::table('pembelian')->orderBy('TGL_PEMBELIAN', 'asc')->get();
+        $detail_pembelian = DB::table('detail_pembelian')->get();
+        if(!Session::get('login')){
+	        return redirect('/')->with('alert','Anda harus login terlebih dahulu');
+	    }else{
+            return view('pembelian/tabel',['user'=>$user, 'bahan_baku'=>$bahan_baku, 'pembelian'=>$pembelian, 'detail_pembelian'=>$detail_pembelian]);
         }
     }
 
@@ -62,7 +75,7 @@ class PembelianController extends Controller
                 ]);
             }
             Session::flash('success','Input pembelian bahan baku berhasil');
-	        return redirect('pembelian');
+	        return redirect('pembelian/tabel');
     }
 
     public function report(){
@@ -78,14 +91,39 @@ class PembelianController extends Controller
             $end = Carbon::parse($date[1])->format('Y-m-d') . ' 23:59:59';
         }
 
-        $user = DB::table('user')->get();
         $pembelian = DB::table('pembelian')->whereBetween('TGL_PEMBELIAN', [$start, $end])->get();
         $bahan_baku = DB::table('bahan_baku')->get();
         $detail_pembelian = DB::table('detail_pembelian')->get();
+        $total_pembelian = DB::table('pembelian')->whereBetween('TGL_PEMBELIAN', [$start, $end])->SUM('TOTAL_PEMBELIAN');
+        $jumlah = DB::table('detail_pembelian')->join('pembelian', 'pembelian.ID_PEMBELIAN', '=', 'detail_pembelian.ID_PEMBELIAN')
+                ->whereBetween('pembelian.TGL_PEMBELIAN', [$start, $end])
+                ->sum('detail_pembelian.JUMLAH');
         if(!Session::get('login')){
 	        return redirect('/')->with('alert','Anda harus login terlebih dahulu');
 	    }else{
-            return view('pembelian/tabel',['user'=>$user, 'pembelian'=>$pembelian, 'bahan_baku'=>$bahan_baku, 'detail_pembelian'=>$detail_pembelian]);
+            return view('pembelian/report',['pembelian'=>$pembelian, 'bahan_baku'=>$bahan_baku, 'detail_pembelian'=>$detail_pembelian, 'total_pembelian'=>$total_pembelian, 'jumlah'=>$jumlah]);
+        }
+    }
+
+    public function reportPDF($daterange){
+        $date = explode('+', $daterange); //EXPLODE TANGGALNYA UNTUK MEMISAHKAN START & END
+        //DEFINISIKAN VARIABLENYA DENGAN FORMAT TIMESTAMPS
+        $start = Carbon::parse($date[0])->format('Y-m-d') . ' 00:00:00';
+        $end = Carbon::parse($date[1])->format('Y-m-d') . ' 23:59:59';
+
+        $pembelian = DB::table('pembelian')->whereBetween('TGL_PEMBELIAN', [$start, $end])->get();
+        $bahan_baku = DB::table('bahan_baku')->get();
+        $detail_pembelian = DB::table('detail_pembelian')->get();
+        $total_pembelian = DB::table('pembelian')->whereBetween('TGL_PEMBELIAN', [$start, $end])->SUM('TOTAL_PEMBELIAN');
+        $jumlah = DB::table('detail_pembelian')->join('pembelian', 'pembelian.ID_PEMBELIAN', '=', 'detail_pembelian.ID_PEMBELIAN')
+                ->whereBetween('pembelian.TGL_PEMBELIAN', [$start, $end])
+                ->sum('detail_pembelian.JUMLAH');
+        if(!Session::get('login')){
+	        return redirect('/')->with('alert','Anda harus login terlebih dahulu');
+	    }else{
+            $pdf=PDF::loadview('pembelian/cetakLaporanPDF', ['start'=>$start, 'end'=>$end, 'pembelian'=>$pembelian, 'bahan_baku'=>$bahan_baku, 'detail_pembelian'=>$detail_pembelian, 'total_pembelian'=>$total_pembelian, 'jumlah'=>$jumlah]);
+            //GENERATE PDF-NYA
+            return $pdf->stream();
         }
     }
 

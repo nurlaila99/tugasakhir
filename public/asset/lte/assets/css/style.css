@@ -435,7 +435,11 @@ canvas {
   border-radius: 3px; }
 
 .text-muted {
-  font-size: 14px; }
+  font-size: 14px;
+  color: #e60000 !important; }
+  .text-muted2 {
+    font-size: 14px;
+    color: #00ac1d !important; }
   .text-muted.muted-black {
     color: #333648 !important;
     font-weight: 600; }
